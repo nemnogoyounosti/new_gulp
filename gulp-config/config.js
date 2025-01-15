@@ -2,15 +2,9 @@ const plugins = {
     gulp: require('gulp'),
     sass: require('gulp-sass')(require('node-sass')),
     autoprefixer: require('gulp-autoprefixer'),
-    sourcemaps: require('gulp-sourcemaps'),
-    cleanCSS: require('gulp-clean-css'),
-    babel: require('gulp-babel'),
-    browserify: require('browserify'),
-    tap: require('gulp-tap'),
-    buffer: require('gulp-buffer'),
-    uglify: require('gulp-uglify'),
     twig: require('gulp-twig'),
     browserSync: require("browser-sync"),
+    concat: require('gulp-concat'),
     init: function () {
         this.sass.compiler = require('node-sass');
     }
@@ -32,13 +26,14 @@ const paths = {
         }
     },
     javascript: {
-        input: 'src/js/*.js',
+        input: 'src/js/**/*.js',
         output: 'build/js/',
         watch: 'src/js/**/*.*',
         libs: {
             input: 'src/libs/js/*.js',
             output: 'build/js/libs/',
-        }
+        },
+        bundleName: 'bundle.js'
     },
     images: {
         input: 'src/images/**/*.*',

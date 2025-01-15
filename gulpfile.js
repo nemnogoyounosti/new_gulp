@@ -14,11 +14,8 @@ function buildHtml() {
 
 function buildStyles() {
     return src(paths.styles.input)
-        .pipe(plugins.sourcemaps.init())
         .pipe(plugins.sass().on('error', plugins.sass.logError))
         .pipe(plugins.autoprefixer())
-        .pipe(plugins.cleanCSS())
-        .pipe(plugins.sourcemaps.write('.'))
         .pipe(dest(paths.styles.output))
         .pipe(reloadBrowser({stream: true}));
 }
@@ -29,17 +26,7 @@ function collectLibsCss() {
 
 function buildJavaScript() {
     return src(paths.javascript.input)
-        .pipe(plugins.tap(function (file) {
-            file.contents = plugins.browserify(file.path, {debug: true}).bundle();
-        }))
-        .pipe(plugins.buffer())
-        .pipe(plugins.sourcemaps.init({loadMaps: true}))
-        .pipe(plugins.babel({
-            presets: ['@babel/env'],
-            "plugins": ["@babel/plugin-proposal-class-properties"]
-        }))
-        .pipe(plugins.uglify())
-        .pipe(plugins.sourcemaps.write('./'))
+        .pipe(plugins.concat(paths.javascript.bundleName))
         .pipe(dest(paths.javascript.output))
         .pipe(reloadBrowser({stream: true}));
 }
